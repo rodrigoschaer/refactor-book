@@ -2,10 +2,9 @@ import plays from "./data/plays.json";
 import invoices from "./data/invoices.json";
 
 const statement = (invoice) => {
-  let totalAmount = 0;
-  let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
 
+  let totalAmount = 0;
   for (let perf of invoice.performances) {
     result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${
       perf.audience
@@ -14,6 +13,7 @@ const statement = (invoice) => {
     totalAmount += amountFor(perf);
   }
 
+  let volumeCredits = 0;
   for (let perf of invoice.performances) {
     volumeCredits += volumeCreditsFor(perf);
   }
