@@ -5,11 +5,6 @@ const statement = (invoice) => {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
-  const format = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  }).format;
 
   for (let perf of invoice.performances) {
     volumeCredits += volumeCreditsFor(perf);
@@ -59,5 +54,12 @@ const volumeCreditsFor = (aPerformance) => {
 
   return result;
 };
+
+const format = (aNumber) =>
+  new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(aNumber);
 
 console.log(statement(invoices[0], plays));
