@@ -1,7 +1,7 @@
 import plays from "./data/plays.json";
 import invoices from "./data/invoices.json";
 
-const statement = (invoice, plays) => {
+const statement = (invoice) => {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
@@ -12,14 +12,8 @@ const statement = (invoice, plays) => {
   }).format;
 
   for (let perf of invoice.performances) {
-    // add volume credits
-    volumeCredits += Math.max(perf.audience - 30, 0);
+    volumeCredits += volumeCreditsFor(perf);
 
-    // add extra credit for every ten comedy attendees
-    if ("comedy" === playFor(perf).type)
-      volumeCredits += Math.floor(perf.audience / 5);
-
-    // print line for this order
     result += ` ${playFor(perf).name}: ${amountFor(perf) / 100} (${
       perf.audience
     } seats)\n`;
@@ -55,5 +49,15 @@ const amountFor = (aPerformance) => {
 };
 
 const playFor = (aPerformance) => plays[aPerformance.playID];
+
+const volumeCreditsFor = (aPerformance) => {
+  let result = 0;
+  result += Math.max(aPerformance.audience - 30, 0);
+
+  if ("comedy" === playFor(aPerformance).type)
+    result += Math.floor(aPerformance.audience / 5);
+
+  return result;
+};
 
 console.log(statement(invoices[0], plays));
