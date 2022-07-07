@@ -35,10 +35,10 @@ const statement = (invoice, plays) => {
   return result;
 };
 
-const amountFor = (aPerformance, aPlay) => {
+const amountFor = (aPerformance) => {
   let result = 0;
 
-  switch (aPlay.type) {
+  switch (playFor(aPerformance).type) {
     case "tragedy":
       result = 40000;
       if (aPerformance.audience > 30)
@@ -51,7 +51,7 @@ const amountFor = (aPerformance, aPlay) => {
       result += 300 * aPerformance.audience;
       break;
     default:
-      throw new Error(`unknown type: ${aPlay.type}`);
+      throw new Error(`unknown type: ${playFor(perf).type}`);
   }
   return result;
 };
