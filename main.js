@@ -12,8 +12,6 @@ const statement = (invoice, plays) => {
   }).format;
 
   for (let perf of invoice.performances) {
-    let thisAmount = amountFor(perf);
-
     // add volume credits
     volumeCredits += Math.max(perf.audience - 30, 0);
 
@@ -22,11 +20,11 @@ const statement = (invoice, plays) => {
       volumeCredits += Math.floor(perf.audience / 5);
 
     // print line for this order
-    result += ` ${playFor(perf).name}: ${thisAmount / 100} (${
+    result += ` ${playFor(perf).name}: ${amountFor(perf) / 100} (${
       perf.audience
     } seats)\n`;
 
-    totalAmount += thisAmount;
+    totalAmount += amountFor(perf);
   }
 
   result += `Amount owed is ${format(totalAmount / 100)}\n`;
@@ -51,7 +49,7 @@ const amountFor = (aPerformance) => {
       result += 300 * aPerformance.audience;
       break;
     default:
-      throw new Error(`unknown type: ${playFor(perf).type}`);
+      throw new Error(`unknown type: ${playFor(aPerformance).type}`);
   }
   return result;
 };
