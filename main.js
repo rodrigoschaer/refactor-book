@@ -1,6 +1,27 @@
 import plays from "./data/plays.json";
 import invoices from "./data/invoices.json";
 
+const amountFor = (aPerformance, aPlay) => {
+  let result = 0;
+
+  switch (aPlay.type) {
+    case "tragedy":
+      result = 40000;
+      if (aPerformance.audience > 30)
+        result += 1000 * (aPerformance.audience - 30);
+      break;
+    case "comedy":
+      result = 30000;
+      if (aPerformance.audience > 20)
+        result += 10000 + 500 * (aPerformance.audience - 20);
+      result += 300 * aPerformance.audience;
+      break;
+    default:
+      throw new Error(`unknown type: ${aPlay.type}`);
+  }
+  return result;
+};
+
 const statement = (invoice, plays) => {
   let totalAmount = 0;
   let volumeCredits = 0;
@@ -13,7 +34,7 @@ const statement = (invoice, plays) => {
 
   for (let perf of invoice.performances) {
     let play = plays[perf.playID];
-    let thisAmount = 0;
+    let thisAmount = amountFor(perf, play);
 
     switch (play.type) {
       case "tragedy":
