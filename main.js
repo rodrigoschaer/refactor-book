@@ -9,14 +9,14 @@ const statement = (invoice) => {
   for (let perf of invoice.performances) {
     volumeCredits += volumeCreditsFor(perf);
 
-    result += ` ${playFor(perf).name}: ${amountFor(perf) / 100} (${
+    result += ` ${playFor(perf).name}: ${usd(amountFor(perf))} (${
       perf.audience
     } seats)\n`;
 
     totalAmount += amountFor(perf);
   }
 
-  result += `Amount owed is ${format(totalAmount / 100)}\n`;
+  result += `Amount owed is ${usd(totalAmount)}\n`;
   result += `You earned ${volumeCredits} credits\n`;
 
   return result;
@@ -55,11 +55,11 @@ const volumeCreditsFor = (aPerformance) => {
   return result;
 };
 
-const format = (aNumber) =>
+const usd = (aNumber) =>
   new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 2,
-  }).format(aNumber);
+  }).format(aNumber / 100);
 
 console.log(statement(invoices[0], plays));
