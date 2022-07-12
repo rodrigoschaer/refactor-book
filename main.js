@@ -13,10 +13,7 @@ const statement = (invoice) => {
     totalAmount += amountFor(perf);
   }
 
-  let volumeCredits = 0;
-  for (let perf of invoice.performances) {
-    volumeCredits += volumeCreditsFor(perf);
-  }
+  
 
   result += `Amount owed is ${usd(totalAmount)}\n`;
   result += `You earned ${volumeCredits} credits\n`;
@@ -64,4 +61,13 @@ const usd = (aNumber) =>
     minimumFractionDigits: 2,
   }).format(aNumber / 100);
 
+
+const totalVolumeCredits = () => {
+  let result = 0;
+  for (let perf of invoice.performances) {
+    result += volumeCreditsFor(perf);
+  }
+  return result;
+}  
+// CONSOLE OUTPUT
 console.log(statement(invoices[0], plays));
